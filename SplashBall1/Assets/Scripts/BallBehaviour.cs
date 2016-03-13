@@ -5,17 +5,22 @@ public class BallBehaviour : MonoBehaviour {
 
 	private int i;
 	private Animator anim;
+	public int pontos;
+	private GameController gc;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		i = Random.Range (-15, 15);
 		anim = GetComponentInChildren<Animator> ();
+		gc = FindObjectOfType (typeof(GameController)) as GameController;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		Rotate ();
-		SelfDestroy ();
+	protected void Update () {
+		if (gc.getStateMachine () == StateMachine.INGAME) {
+			Rotate ();
+			SelfDestroy ();
+		}
 	}
 
 	void Rotate(){
@@ -40,12 +45,14 @@ public class BallBehaviour : MonoBehaviour {
 		if (transform.tag == "Ball") {
 			anim.SetBool ("Shoot", true);
 			Debug.Log ("GG");
+			gc.AddScore (pontos);
 			Destroy (gameObject, 0.5f);
 			//contar pontos
 		} else if (transform.tag == "Bomb") {
 			anim.SetBool ("Shoot", true);
 			Debug.Log ("Game over");
 			Destroy (gameObject, 0.5f);
+			gc.setStateMachine (StateMachine.GAMEOVER);
 		}  
 	}
 

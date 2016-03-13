@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class GerarBolas : MonoBehaviour {
-
+	private GameController gc;
 	private float currentTimeToSpawn;
 	private float timeToSpawn;
 
@@ -14,16 +14,19 @@ public class GerarBolas : MonoBehaviour {
 	void Start () {
 		timeToSpawn = 2.0f;
 		currentTimeToSpawn = timeToSpawn;
+		gc = FindObjectOfType (typeof(GameController)) as GameController;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		currentTimeToSpawn += Time.deltaTime;
-		if (currentTimeToSpawn >= timeToSpawn) {
-			Spawn ();
-			currentTimeToSpawn = 0;
-			if (timeToSpawn > 0.5) {
-				timeToSpawn -= 0.01f;
+		if (gc.getStateMachine () == StateMachine.INGAME) {
+			currentTimeToSpawn += Time.deltaTime;
+			if (currentTimeToSpawn >= timeToSpawn) {
+				Spawn ();
+				currentTimeToSpawn = 0;
+				if (timeToSpawn > 0.5) {
+					timeToSpawn -= 0.01f;
+				}
 			}
 		}
 	}

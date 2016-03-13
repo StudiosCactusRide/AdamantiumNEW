@@ -4,7 +4,7 @@ using System.Collections;
 public class GerarCloud : MonoBehaviour {
 
 	private float currentTimeToSpawn;
-
+	private GameController gc;
 
 	[Header("Tempo maximo para instanciar")][Space(5)]
 	public float timeToSpawn;
@@ -14,14 +14,17 @@ public class GerarCloud : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		currentTimeToSpawn = timeToSpawn;
+		gc = FindObjectOfType (typeof(GameController)) as GameController;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		currentTimeToSpawn += Time.deltaTime;
-		if (currentTimeToSpawn >= timeToSpawn) {
-			Spawn ();
-			currentTimeToSpawn = 0;
+		if (gc.getStateMachine () == StateMachine.INGAME) {
+			currentTimeToSpawn += Time.deltaTime;
+			if (currentTimeToSpawn >= timeToSpawn) {
+				Spawn ();
+				currentTimeToSpawn = 0;
+			}
 		}
 	}
 

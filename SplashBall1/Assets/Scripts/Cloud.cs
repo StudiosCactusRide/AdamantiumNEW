@@ -4,16 +4,19 @@ using System.Collections;
 public class Cloud : MonoBehaviour {
 
 	private float vel;
-
+	private GameController gc;
 
 	// Use this for initialization
 	void Start () {
 		vel = Random.Range (0.8f, 5.0f);
+		gc = FindObjectOfType (typeof(GameController)) as GameController;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		MoveCloud ();
+		if (gc.getStateMachine () == StateMachine.INGAME) {
+			MoveCloud ();
+		}
 	}
 
 	void MoveCloud(){
